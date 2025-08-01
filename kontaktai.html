@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DŠ FILMS - Kontaktai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #113939; /* Тёмно-зелёный */
+            --background-color: #FFFFFF; /* Белый */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Jost', sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            padding-top: 80px; /* Отступ для фиксированного хедера */
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
+
+        .header-title {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--background-color);
+        }
+
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .hamburger-menu:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--background-color);
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        .nav-overlay {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            overflow-x: hidden;
+            transition: 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-overlay-content {
+            position: relative;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .nav-overlay a {
+            padding: 15px 8px;
+            text-decoration: none;
+            font-size: 1.8em;
+            color: var(--background-color);
+            display: block;
+            transition: 0.3s;
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        .nav-overlay a:hover, .nav-overlay a:focus {
+            color: #a0a0a0;
+        }
+
+        .nav-overlay .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+            text-decoration: none;
+            color: var(--background-color);
+            transition: 0.3s;
+        }
+
+        .nav-overlay .closebtn:hover {
+            color: #a0a0a0;
+        }
+
+        .language-switcher {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .language-switcher button {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-switcher button.active,
+        .language-switcher button:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        main {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .contact-form {
+            background-color: var(--background-color);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1em;
+            color: var(--primary-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button[type="submit"] {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0c2a2a;
+            transform: translateY(-3px);
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: flex;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .contact-form {
+                padding: 20px;
+            }
+            .form-group input, .form-group textarea {
+                width: calc(100% - 20px); /* Adjust for smaller padding */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            button[type="submit"] {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="header-title">DŠ FILMS</a>
+        <div class="hamburger-menu" onclick="openNav()">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div id="myNav" class="nav-overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="nav-overlay-content">
+                <a href="index.html" data-lang-lt="Pagrindinis" data-lang-en="Home" data-lang-ru="Главная">Pagrindinis</a>
+                <a href="filmai.html" data-lang-lt="Filmai" data-lang-en="Films" data-lang-ru="Фильмы">Filmai</a>
+                <a href="kontaktai.html" data-lang-lt="Kontaktai" data-lang-en="Contacts" data-lang-ru="Контакты">Kontaktai</a>
+                <a href="privatumo-politika.html" data-lang-lt="Privatumo politika" data-lang-en="Privacy Policy" data-lang-ru="Политика конфиденциальности">Privatumo politika</a>
+                <div class="language-switcher">
+                    <button onclick="setLanguage('lt')" id="lang-lt">LT</button>
+                    <button onclick="setLanguage('en')" id="lang-en">EN</button>
+                    <button onclick="setLanguage('ru')" id="lang-ru">RU</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <h1 data-lang-lt="Kontaktai" data-lang-en="Contacts" data-lang-ru="Контакты">Kontaktai</h1>
+        <div class="contact-form">
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="name" data-lang-lt="Vardas" data-lang-en="Name" data-lang-ru="Имя">Vardas</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" data-lang-lt="El. paštas" data-lang-en="Email" data-lang-ru="Электронная почта">El. paštas</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message" data-lang-lt="Žinutė" data-lang-en="Message" data-lang-ru="Сообщение">Žinutė</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" data-lang-lt="Siųsti" data-lang-en="Send" data-lang-ru="Отправить">Siųsti</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const translations = {
+            lt: {
+                home: "Pagrindinis",
+                films: "Filmai",
+                contacts: "Kontaktai",
+                privacyPolicy: "Privatumo politika",
+                contactsTitle: "Kontaktai",
+                nameLabel: "Vardas",
+                emailLabel: "El. paštas",
+                messageLabel: "Žinutė",
+                sendButton: "Siųsti"
+            },
+            en: {
+                home: "Home",
+                films: "Films",
+                contacts: "Contacts",
+                privacyPolicy: "Privacy Policy",
+                contactsTitle: "Contacts",
+                nameLabel: "Name",
+                emailLabel: "Email",
+                messageLabel: "Message",
+                sendButton: "Send"
+            },
+            ru: {
+                home: "Главная",
+                films: "Фильмы",
+                contacts: "Контакты",
+                privacyPolicy: "Политика конфиденциальности",
+                contactsTitle: "Контакты",
+                nameLabel: "Имя",
+                emailLabel: "Электронная почта",
+                messageLabel: "Сообщение",
+                sendButton: "Отправить"
+            }
+        };
+
+        let currentLang = 'lt';
+
+        function openNav() {
+            document.getElementById("myNav").style.width = "100%";
+        }
+
+        function closeNav() {
+            document.getElementById("myNav").style.width = "0%";
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            updateContentLanguage(lang);
+            highlightActiveLanguageButton(lang);
+            closeNav();
+        }
+
+        function updateContentLanguage(lang) {
+            document.querySelectorAll('[data-lang-lt]').forEach(element => {
+                const ltText = element.getAttribute('data-lang-lt');
+                const enText = element.getAttribute('data-lang-en');
+                const ruText = element.getAttribute('data-lang-ru');
+
+                if (lang === 'lt') {
+                    element.textContent = ltText;
+                } else if (lang === 'en') {
+                    element.textContent = enText;
+                } else if (lang === 'ru') {
+                    element.textContent = ruText;
+                }
+            });
+            document.title = `DŠ FILMS - ${translations[lang].contactsTitle}`;
+        }
+
+        function highlightActiveLanguageButton(lang) {
+            document.querySelectorAll('.language-switcher button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            let initialLang = 'lt';
+
+            if (langParam && translations[langParam]) {
+                initialLang = langParam;
+            } else if (localStorage.getItem('lang') && translations[localStorage.getItem('lang')]) {
+                initialLang = localStorage.getItem('lang');
+            }
+
+            setLanguage(initialLang);
+        });
+    </script>
+</body>
+</html>
+
