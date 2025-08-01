@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DŠ FILMS - Privatumo politika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #113939; /* Тёмно-зелёный */
+            --background-color: #FFFFFF; /* Белый */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Jost', sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            padding-top: 80px; /* Отступ для фиксированного хедера */
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
+
+        .header-title {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--background-color);
+        }
+
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .hamburger-menu:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--background-color);
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        .nav-overlay {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            overflow-x: hidden;
+            transition: 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-overlay-content {
+            position: relative;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .nav-overlay a {
+            padding: 15px 8px;
+            text-decoration: none;
+            font-size: 1.8em;
+            color: var(--background-color);
+            display: block;
+            transition: 0.3s;
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        .nav-overlay a:hover, .nav-overlay a:focus {
+            color: #a0a0a0;
+        }
+
+        .nav-overlay .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+            text-decoration: none;
+            color: var(--background-color);
+            transition: 0.3s;
+        }
+
+        .nav-overlay .closebtn:hover {
+            color: #a0a0a0;
+        }
+
+        .language-switcher {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .language-switcher button {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-switcher button.active,
+        .language-switcher button:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: flex;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="header-title">DŠ FILMS</a>
+        <div class="hamburger-menu" onclick="openNav()">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div id="myNav" class="nav-overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="nav-overlay-content">
+                <a href="index.html" data-lang-lt="Pagrindinis" data-lang-en="Home" data-lang-ru="Главная">Pagrindinis</a>
+                <a href="filmai.html" data-lang-lt="Filmai" data-lang-en="Films" data-lang-ru="Фильмы">Filmai</a>
+                <a href="kontaktai.html" data-lang-lt="Kontaktai" data-lang-en="Contacts" data-lang-ru="Контакты">Kontaktai</a>
+                <a href="privatumo-politika.html" data-lang-lt="Privatumo politika" data-lang-en="Privacy Policy" data-lang-ru="Политика конфиденциальности">Privatumo politika</a>
+                <div class="language-switcher">
+                    <button onclick="setLanguage('lt')" id="lang-lt">LT</button>
+                    <button onclick="setLanguage('en')" id="lang-en">EN</button>
+                    <button onclick="setLanguage('ru')" id="lang-ru">RU</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <h1 data-lang-lt="Privatumo politika" data-lang-en="Privacy Policy" data-lang-ru="Политика конфиденциальности">Privatumo politika</h1>
+
+        <div data-lang-lt>
+            <p>Ši privatumo politika paaiškina, kaip films.dominicphotofficial.lt renka, naudoja ir apsaugo jūsų asmeninę informaciją, kai lankotės mūsų svetainėje. Mums yra svarbus jūsų privatumas.</p>
+            <h2>Informacijos rinkimas ir naudojimas</h2>
+            <p>Mes nerenkame jokios asmeninės informacijos apie jus, kai lankotės mūsų svetainėje, išskyrus tuos atvejus, kai jūs ją pateikiate savanoriškai per kontaktinę formą. Kontaktinėje formoje pateikta informacija (vardas, el. paštas, žinutė) bus naudojama tik atsakymui į jūsų užklausą.</p>
+            <h2>Slapukai</h2>
+            <p>Ši svetainė nenaudoja slapukų ar kitų sekimo technologijų. Jūsų naršymo patirtis yra visiškai anoniminė.</p>
+            <h2>Nuorodos į trečiųjų šalių svetaines</h2>
+            <p>Mūsų svetainėje gali būti nuorodų į kitas svetaines (pvz., filmų transliacijos platformas). Mes nesame atsakingi už šių svetainių privatumo praktiką ar turinį. Rekomenduojame perskaityti jų privatumo politiką.</p>
+            <h2>Duomenų saugumas</h2>
+            <p>Mes imamės pagrįstų priemonių, kad apsaugotume jūsų pateiktą informaciją nuo neteisėtos prieigos, naudojimo ar atskleidimo. Tačiau atminkite, kad joks duomenų perdavimas internetu ar elektroninis saugojimas nėra 100% saugus.</p>
+            <h2>Privatumo politikos pakeitimai</h2>
+            <p>Mes pasiliekame teisę bet kada atnaujinti šią privatumo politiką. Visi pakeitimai bus paskelbti šioje svetainėje. Rekomenduojame periodiškai peržiūrėti šią politiką, kad būtumėte informuoti apie tai, kaip mes saugome jūsų informaciją.</p>
+            <h2>Susisiekite su mumis</h2>
+            <p>Jei turite klausimų dėl šios privatumo politikos, susisiekite su mumis per kontaktinę formą.</p>
+        </div>
+
+        <div data-lang-en style="display:none;">
+            <p>This Privacy Policy explains how films.dominicphotofficial.lt collects, uses, and protects your personal information when you visit our website. Your privacy is important to us.</p>
+            <h2>Information Collection and Use</h2>
+            <p>We do not collect any personal information about you when you visit our website, except when you voluntarily provide it through the contact form. Information provided in the contact form (name, email, message) will only be used to respond to your inquiry.</p>
+            <h2>Cookies</h2>
+            <p>This website does not use cookies or other tracking technologies. Your browsing experience is completely anonymous.</p>
+            <h2>Links to Third-Party Websites</h2>
+            <p>Our website may contain links to other websites (e.g., film streaming platforms). We are not responsible for the privacy practices or content of these websites. We recommend reading their privacy policies.</p>
+            <h2>Data Security</h2>
+            <p>We take reasonable measures to protect the information you provide from unauthorized access, use, or disclosure. However, please note that no data transmission over the internet or electronic storage is 100% secure.</p>
+            <h2>Changes to the Privacy Policy</h2>
+            <p>We reserve the right to update this Privacy Policy at any time. All changes will be posted on this website. We recommend reviewing this policy periodically to stay informed about how we protect your information.</p>
+            <h2>Contact Us</h2>
+            <p>If you have any questions about this Privacy Policy, please contact us via the contact form.</p>
+        </div>
+
+        <div data-lang-ru style="display:none;">
+            <p>Настоящая Политика конфиденциальности объясняет, как films.dominicphotofficial.lt собирает, использует и защищает вашу личную информацию, когда вы посещаете наш веб-сайт. Ваша конфиденциальность важна для нас.</p>
+            <h2>Сбор и использование информации</h2>
+            <p>Мы не собираем никакой личной информации о вас, когда вы посещаете наш веб-сайт, за исключением случаев, когда вы добровольно предоставляете ее через контактную форму. Информация, предоставленная в контактной форме (имя, адрес электронной почты, сообщение), будет использоваться только для ответа на ваш запрос.</p>
+            <h2>Файлы cookie</h2>
+            <p>Этот веб-сайт не использует файлы cookie или другие технологии отслеживания. Ваш просмотр является полностью анонимным.</p>
+            <h2>Ссылки на сторонние веб-сайты</h2>
+            <p>Наш веб-сайт может содержать ссылки на другие веб-сайты (например, платформы для потоковой передачи фильмов). Мы не несем ответственности за политику конфиденциальности или содержание этих веб-сайтов. Мы рекомендуем ознакомиться с их политикой конфиденциальности.</p>
+            <h2>Безопасность данных</h2>
+            <p>Мы принимаем разумные меры для защиты предоставленной вами информации от несанкционированного доступа, использования или раскрытия. Однако, пожалуйста, имейте в виду, что ни одна передача данных через Интернет или электронное хранение не является на 100% безопасной.</p>
+            <h2>Изменения в Политике конфиденциальности</h2>
+            <p>Мы оставляем за собой право обновлять настоящую Политику конфиденциальности в любое время. Все изменения будут опубликованы на этом веб-сайте. Мы рекомендуем периодически просматривать эту политику, чтобы быть в курсе того, как мы защищаем вашу информацию.</p>
+            <h2>Свяжитесь с нами</h2>
+            <p>Если у вас есть какие-либо вопросы относительно настоящей Политики конфиденциальности, пожалуйста, свяжитесь с нами через контактную форму.</p>
+        </div>
+    </main>
+
+    <script>
+        const translations = {
+            lt: {
+                home: "Pagrindinis",
+                films: "Filmai",
+                contacts: "Kontaktai",
+                privacyPolicy: "Privatumo politika",
+                privacyPolicyTitle: "Privatumo politika"
+            },
+            en: {
+                home: "Home",
+                films: "Films",
+                contacts: "Contacts",
+                privacyPolicy: "Privacy Policy",
+                privacyPolicyTitle: "Privacy Policy"
+            },
+            ru: {
+                home: "Главная",
+                films: "Фильмы",
+                contacts: "Контакты",
+                privacyPolicy: "Политика конфиденциальности",
+                privacyPolicyTitle: "Политика конфиденциальности"
+            }
+        };
+
+        let currentLang = 'lt';
+
+        function openNav() {
+            document.getElementById("myNav").style.width = "100%";
+        }
+
+        function closeNav() {
+            document.getElementById("myNav").style.width = "0%";
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            updateContentLanguage(lang);
+            highlightActiveLanguageButton(lang);
+            closeNav();
+        }
+
+        function updateContentLanguage(lang) {
+            document.querySelectorAll('[data-lang-lt]').forEach(element => {
+                if (element.hasAttribute(`data-lang-${lang}`)) {
+                    element.style.display = 'block';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+
+            document.querySelectorAll('header [data-lang-lt]').forEach(element => {
+                const ltText = element.getAttribute('data-lang-lt');
+                const enText = element.getAttribute('data-lang-en');
+                const ruText = element.getAttribute('data-lang-ru');
+
+                if (lang === 'lt') {
+                    element.textContent = ltText;
+                } else if (lang === 'en') {
+                    element.textContent = enText;
+                } else if (lang === 'ru') {
+                    element.textContent = ruText;
+                }
+                element.style.display = ''; // Ensure header elements are always visible
+            });
+
+            document.title = `DŠ FILMS - ${translations[lang].privacyPolicyTitle}`;
+            document.querySelector('main h1').textContent = translations[lang].privacyPolicyTitle;
+        }
+
+        function highlightActiveLanguageButton(lang) {
+            document.querySelectorAll('.language-switcher button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            let initialLang = 'lt';
+
+            if (langParam && translations[langParam]) {
+                initialLang = langParam;
+            } else if (localStorage.getItem('lang') && translations[localStorage.getItem('lang')]) {
+                initialLang = localStorage.getItem('lang');
+            }
+
+            setLanguage(initialLang);
+        });
+    </script>
+</body>
+</html>
+
