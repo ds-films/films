@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DŠ FILMS - Filmai</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #113939; /* Тёмно-зелёный */
+            --background-color: #FFFFFF; /* Белый */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Jost', sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            padding-top: 80px; /* Отступ для фиксированного хедера */
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box; /* Учитываем padding в ширине */
+        }
+
+        .header-title {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--background-color);
+        }
+
+        .hamburger-menu {
+            display: none; /* Скрыть по умолчанию на десктопе */
+            flex-direction: column;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .hamburger-menu:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--background-color);
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        .nav-overlay {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            right: 0;
+            background-color: var(--primary-color);
+            overflow-x: hidden;
+            transition: 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-overlay-content {
+            position: relative;
+            top: 15%;
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .nav-overlay a {
+            padding: 15px 8px;
+            text-decoration: none;
+            font-size: 1.8em;
+            color: var(--background-color);
+            display: block;
+            transition: 0.3s;
+            font-family: 'Josefin Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        .nav-overlay a:hover, .nav-overlay a:focus {
+            color: #a0a0a0;
+        }
+
+        .nav-overlay .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 45px;
+            font-size: 60px;
+            text-decoration: none;
+            color: var(--background-color);
+            transition: 0.3s;
+        }
+
+        .nav-overlay .closebtn:hover {
+            color: #a0a0a0;
+        }
+
+        .language-switcher {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .language-switcher button {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-switcher button.active,
+        .language-switcher button:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 40px;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .film-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .film-card {
+            background-color: var(--background-color);
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: var(--primary-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .film-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .film-card-image {
+            width: 100%;
+            height: 200px; /* Фиксированная высота для превью */
+            object-fit: cover;
+            display: block;
+        }
+
+        .film-card-content {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .film-card-title {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .film-card-year {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: flex; /* Показать на мобильных */
+            }
+
+            .nav-overlay a {
+                font-size: 1.5em;
+            }
+
+            .nav-overlay .closebtn {
+                font-size: 40px;
+                right: 20px;
+            }
+
+            .header-title {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .film-grid {
+                grid-template-columns: 1fr; /* Одна колонка на очень маленьких экранах */
+            }
+            .film-card-image {
+                height: 180px;
+            }
+            .film-card-title {
+                font-size: 1.2em;
+            }
+            .intro-text {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="header-title">DŠ FILMS</a>
+        <div class="hamburger-menu" onclick="openNav()">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div id="myNav" class="nav-overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="nav-overlay-content">
+                <a href="index.html" data-lang-lt="Pagrindinis" data-lang-en="Home" data-lang-ru="Главная">Pagrindinis</a>
+                <a href="filmai.html" data-lang-lt="Filmai" data-lang-en="Films" data-lang-ru="Фильмы">Filmai</a>
+                <a href="kontaktai.html" data-lang-lt="Kontaktai" data-lang-en="Contacts" data-lang-ru="Контакты">Kontaktai</a>
+                <a href="privatumo-politika.html" data-lang-lt="Privatumo politika" data-lang-en="Privacy Policy" data-lang-ru="Политика конфиденциальности">Privatumo politika</a>
+                <div class="language-switcher">
+                    <button onclick="setLanguage('lt')" id="lang-lt">LT</button>
+                    <button onclick="setLanguage('en')" id="lang-en">EN</button>
+                    <button onclick="setLanguage('ru')" id="lang-ru">RU</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <p class="intro-text" data-lang-lt="Svetainė, kur galite žiūrėti Dominik Šuškevič filmus." data-lang-en="A website where you can watch the films of Dominik Šuškevič." data-lang-ru="Сайт, где вы можете посмотреть фильмы Доминик Шушкевич.">Svetainė, kur galite žiūrėti Dominik Šuškevič filmus.</p>
+
+        <div class="film-grid" id="filmGrid">
+            <!-- Film cards will be injected here by JavaScript -->
+        </div>
+    </main>
+
+    <script>
+        const translations = {
+            lt: {
+                home: "Pagrindinis",
+                films: "Filmai",
+                contacts: "Kontaktai",
+                privacyPolicy: "Privatumo politika",
+                mainDescription: "Svetainė, kur galite žiūrėti Dominik Šuškevič filmus.",
+                ruduoPrieGimnazijos: "Ruduo Prie Gimnazijos",
+                exit: "Exit",
+                katinasSuBaime: "Katinas Su Baime",
+                natureVideo: "Nature Video"
+            },
+            en: {
+                home: "Home",
+                films: "Films",
+                contacts: "Contacts",
+                privacyPolicy: "Privacy Policy",
+                mainDescription: "A website where you can watch the films of Dominik Šuškevič.",
+                ruduoPrieGimnazijos: "Autumn by the Gymnasium",
+                exit: "Exit",
+                katinasSuBaime: "Cat with Fear",
+                natureVideo: "Nature Video"
+            },
+            ru: {
+                home: "Главная",
+                films: "Фильмы",
+                contacts: "Контакты",
+                privacyPolicy: "Политика конфиденциальности",
+                mainDescription: "Сайт, где вы можете посмотреть фильмы Доминик Шушкевич.",
+                ruduoPrieGimnazijos: "Осень у Гимназии",
+                exit: "Выход",
+                katinasSuBaime: "Кот со страхом",
+                natureVideo: "Видео о природе"
+            }
+        };
+
+        const filmData = [
+            {
+                id: 'skmg-2023',
+                title: {
+                    lt: 'Ruduo Prie Gimnazijos',
+                    en: 'Autumn by the Gymnasium',
+                    ru: 'Осень у Гимназии'
+                },
+                year: 2023,
+                preview: 'https://i.postimg.cc/MpXd5Kks/Ruduo-prie-gimnazijos.png',
+                page: 'filmas-skmg-2023.html'
+            },
+            {
+                id: 'exit-2024',
+                title: {
+                    lt: 'Exit',
+                    en: 'Exit',
+                    ru: 'Выход'
+                },
+                year: 2024,
+                preview: 'https://i.postimg.cc/ydfDLBCP/Exit.png',
+                page: 'filmas-exit-2024.html'
+            },
+            {
+                id: 'katinas-su-baime-2024',
+                title: {
+                    lt: 'Katinas Su Baime',
+                    en: 'Cat with Fear',
+                    ru: 'Кот со страхом'
+                },
+                year: 2024,
+                preview: 'https://i.postimg.cc/PxYjxnd4/Katinas-su-baime.png',
+                page: 'filmas-katinas-su-baime-2024.html'
+            },
+            {
+                id: 'nature-video-2024',
+                title: {
+                    lt: 'Nature Video',
+                    en: 'Nature Video',
+                    ru: 'Видео о природе'
+                },
+                year: 2024,
+                preview: 'https://i.postimg.cc/zGPPYHSZ/Nature-Video.png',
+                page: 'filmas-nature-video-2024.html'
+            }
+        ];
+
+        let currentLang = 'lt';
+
+        // Открытие навигации
+        function openNav() {
+            document.getElementById("myNav").style.width = "100%";
+        }
+
+        // Закрытие навигации
+        function closeNav() {
+            document.getElementById("myNav").style.width = "0%";
+        }
+
+        // Функция для установки языка
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang); // Сохраняем язык в localStorage
+            updateContentLanguage(lang);
+            renderFilmCards(lang); // Перерисовываем карточки фильмов при смене языка
+            highlightActiveLanguageButton(lang);
+            closeNav(); // Закрываем меню после выбора языка
+        }
+
+        // Обновление контента на основе выбранного языка
+        function updateContentLanguage(lang) {
+            document.querySelectorAll('[data-lang-lt]').forEach(element => {
+                const ltText = element.getAttribute('data-lang-lt');
+                const enText = element.getAttribute('data-lang-en');
+                const ruText = element.getAttribute('data-lang-ru');
+
+                if (lang === 'lt') {
+                    element.textContent = ltText;
+                } else if (lang === 'en') {
+                    element.textContent = enText;
+                } else if (lang === 'ru') {
+                    element.textContent = ruText;
+                }
+            });
+
+            // Обновляем текст заголовка
+            document.title = translations[lang].films;
+        }
+
+        // Подсветка активной кнопки языка
+        function highlightActiveLanguageButton(lang) {
+            document.querySelectorAll('.language-switcher button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+        }
+
+        // Рендеринг карточек фильмов
+        function renderFilmCards(lang) {
+            const filmGrid = document.getElementById('filmGrid');
+            filmGrid.innerHTML = ''; // Очищаем существующие карточки
+
+            filmData.forEach(film => {
+                const card = document.createElement('a');
+                card.href = `${film.page}?lang=${lang}`; // Передаем язык на страницу фильма
+                card.classList.add('film-card');
+
+                card.innerHTML = `
+                    <img src="${film.preview}" alt="${film.title[lang]}" class="film-card-image">
+                    <div class="film-card-content">
+                        <h3 class="film-card-title">${film.title[lang]}</h3>
+                        <p class="film-card-year">${film.year}</p>
+                    </div>
+                `;
+                filmGrid.appendChild(card);
+            });
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            let initialLang = 'lt';
+
+            if (langParam && translations[langParam]) {
+                initialLang = langParam;
+            } else if (localStorage.getItem('lang') && translations[localStorage.getItem('lang')]) {
+                initialLang = localStorage.getItem('lang');
+            }
+
+            setLanguage(initialLang);
+        });
+    </script>
+</body>
+</html>
+
