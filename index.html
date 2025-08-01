@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DŠ FILMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #113939; /* Тёмно-зелёный */
+            --background-color: #FFFFFF; /* Белый */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Jost', sans-serif;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Скрыть прокрутку на первой странице */
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .intro-container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInScale 1.5s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 150px; /* Размер логотипа */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            animation: logoAppear 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        @keyframes logoAppear {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            70% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .caption {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 1.5s; /* Появляется после логотипа */
+        }
+
+        .scroll-down-button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 2s; /* Появляется после подписи */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .scroll-down-button:hover {
+            background-color: #0c2a2a; /* Чуть темнее зелёный */
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .logo {
+                width: 120px;
+            }
+            .caption {
+                font-size: 1.2em;
+            }
+            .scroll-down-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                width: 100px;
+            }
+            .caption {
+                font-size: 1em;
+            }
+            .scroll-down-button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-container">
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/rmmVKyzd/Dp.png" alt="DSHEFILMS Logo" class="logo">
+        </div>
+        <p class="caption" data-lang-lt="Filmai iš Dominik Shushkevich" data-lang-en="Films by Dominik Shushkevich" data-lang-ru="Фильмы Доминик Шушкевич">Filmai iš Dominik Shushkevich</p>
+        <a href="filmai.html" class="scroll-down-button" data-lang-lt="Žiūrėti filmus" data-lang-en="Watch Films" data-lang-ru="Смотреть фильмы">Žiūrėti filmus</a>
+    </div>
+
+    <script>
+        // Функция для установки языка на основе URL параметра или localStorage
+        function setLanguageFromUrlOrStorage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let lang = urlParams.get('lang') || localStorage.getItem('lang') || 'lt';
+            document.documentElement.lang = lang; // Устанавливаем атрибут lang для HTML
+            updateContentLanguage(lang);
+        }
+
+        // Обновление контента на основе выбранного языка
+        function updateContentLanguage(lang) {
+            document.querySelectorAll('[data-lang-lt]').forEach(element => {
+                const ltText = element.getAttribute('data-lang-lt');
+                const enText = element.getAttribute('data-lang-en');
+                const ruText = element.getAttribute('data-lang-ru');
+
+                if (lang === 'lt') {
+                    element.textContent = ltText;
+                } else if (lang === 'en') {
+                    element.textContent = enText;
+                } else if (lang === 'ru') {
+                    element.textContent = ruText;
+                }
+            });
+        }
+
+        // Вызываем функцию при загрузке страницы
+        document.addEventListener('DOMContentLoaded', setLanguageFromUrlOrStorage);
+
+        // Передача языка на следующую страницу
+        document.querySelector('.scroll-down-button').addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentLang = document.documentElement.lang;
+            window.location.href = `filmai.html?lang=${currentLang}`;
+        });
+    </script>
+</body>
+</html>
+
